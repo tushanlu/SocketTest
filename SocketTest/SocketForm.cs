@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace SocketTest
         private bool m_bThread;
         private bool m_bSend = false;
         private int m_Time = 500;
-        private static EventWaitHandle handler = new AutoResetEvent(false);
+        private EventWaitHandle handler = new AutoResetEvent(false);
 
         public SocketForm(int port, bool socketType, int textBoxNum = 0, List<string> massageList = null)
         {
@@ -65,7 +66,31 @@ namespace SocketTest
             m_ReceiveThread.Start();
         }
 
-        public void SetTime(int time)
+        [DllImport("user32.dll")]
+        public static extern int GetFocus(); //获取当前获得焦点的控件
+
+        private TextBox GetFocusTextBox()
+        {
+            TextBox textBoxTemp = null;
+            //获取当前获得焦点的控件
+            IntPtr handle = (IntPtr)GetFocus();
+            if (handle == null)
+            {
+                this.FindForm().KeyPreview = true;
+            }
+            else
+            {
+                Control control = Control.FromHandle(handle);//这就是
+                if (control is TextBox)
+                {
+                    textBoxTemp = (TextBox)control;
+                }
+            }
+            return textBoxTemp;
+        }
+
+
+    public void SetTime(int time)
         {
             m_Time = time;
         }
@@ -119,7 +144,12 @@ namespace SocketTest
             m_statusStrip.Items.Add(m_buttonmPause);
             m_statusStrip.Items.Add(m_buttonConnect);
             m_statusStrip.Items.Add(m_buttonAddMessage);
-            EnabledHandoff(m_buttonStop, true);
+            List<ToolStripButton> templist = new List<ToolStripButton>
+            {
+                m_buttonStop,
+                m_buttonmPause
+            };
+            EnabledHandoff(templist, true);
 
             m_listBox.HorizontalScrollbar = true;
             m_listBox.Dock = DockStyle.Fill;
@@ -128,6 +158,7 @@ namespace SocketTest
 
         private void AddTextBox(ref TextBox textBox)
         {
+
             textBox.Width = panel_Lefl.Width - 10;
             Point point = new Point();
             point.X = 0;
@@ -135,19 +166,21 @@ namespace SocketTest
             point.Y = ntextBoxListCount > 0 ? m_textBoxList[ntextBoxListCount - 1].Location.Y + textBox.Height + 3 : 0;
             textBox.Location = point;
             this.panel_Lefl.Controls.Add(textBox);
+            textBox.TabIndex = ntextBoxListCount;
             m_textBoxList.Add(textBox);
 
         }
 
-        private void EnabledHandoff(ToolStripButton toolStripButton, bool bHandoff)
+        private void EnabledHandoff(List<ToolStripButton> toolStripButtons, bool bHandoff)
         {
-            toolStripButton.Enabled = !bHandoff;     
+          
             foreach (ToolStripButton temp in m_statusStrip.Items)
             {       
-                if (temp != toolStripButton && temp != m_buttonmPause)
-                {
-                    temp.Enabled = bHandoff;
-                }
+               temp.Enabled = bHandoff;
+            }
+            foreach (ToolStripButton temp in toolStripButtons)
+            {
+                temp.Enabled = !bHandoff;
             }
             foreach (TextBox tempTextBox in m_textBoxList)
             {
@@ -190,7 +223,12 @@ namespace SocketTest
                             m_bThread = false;
                             this.Invoke((EventHandler)delegate
                             {
-                                EnabledHandoff(m_buttonStop, true);
+                                List<ToolStripButton> templist = new List<ToolStripButton>
+                                {
+                                    m_buttonStop,
+                                    m_buttonmPause
+                                };
+                                EnabledHandoff(templist, true);
                             });
                         }
                         if (!m_bThread)
@@ -278,14 +316,24 @@ namespace SocketTest
             m_SendThread.IsBackground = true;
             m_SendThread.Name = "发送消息线程";
             m_SendThread.Start();
-            EnabledHandoff(m_buttonStop, false);
+            List<ToolStripButton> templist = new List<ToolStripButton>
+            {
+                m_buttonStop,
+                m_buttonmPause
+            };
+            EnabledHandoff(templist, false);
         }
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
 
             m_bThread = false;
-            EnabledHandoff(m_buttonStop, true);
+            List<ToolStripButton> templist = new List<ToolStripButton>
+            {
+                m_buttonStop,
+                m_buttonmPause
+            };
+            EnabledHandoff(templist, true);
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
@@ -298,14 +346,16 @@ namespace SocketTest
         {
             
             int textBoxCount = m_textBoxList.Count;
-            if (textBoxCount == 0) return;
-            for (int i = 0;i < textBoxCount; i++)
+            int textBoxIndex = GetFocusTextBox() == null ? -1: GetFocusTextBox().TabIndex;
+            if (textBoxCount == 0 || textBoxIndex == -1) return;
+            string[] tempArr = m_textBoxList[textBoxIndex].Text.Split('{','}');
+            bool bIntType =  int.TryParse(tempArr[tempArr.Length / 2], out int nTmpe);
+            for (int i = textBoxIndex,add = 0; i < textBoxCount; i++,add++)
             {
-                string[] tempArr = m_textBoxList[0].Text.Split('{','}');
-                bool bIntType =  int.TryParse(tempArr[tempArr.Length / 2], out int nTmpe);
                 if (tempArr.Length ==0 || !bIntType) break;
-                string strTemp = tempArr[0] +"{"+ (i+ nTmpe) +"}" + tempArr[tempArr.Length-1];
+                string strTemp = tempArr[0] +"{"+ (nTmpe + add) +"}" + tempArr[tempArr.Length-1];         
                 m_textBoxList[i].Text = strTemp;
+          
             }
         }
 
