@@ -48,16 +48,16 @@
             this.panel_Lefl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_Lefl.Location = new System.Drawing.Point(0, 0);
             this.panel_Lefl.Name = "panel_Lefl";
-            this.panel_Lefl.Size = new System.Drawing.Size(329, 419);
+            this.panel_Lefl.Size = new System.Drawing.Size(401, 419);
             this.panel_Lefl.TabIndex = 0;
-            this.panel_Lefl.Resize += new System.EventHandler(this.panel_Resize);
+            this.panel_Lefl.Resize += new System.EventHandler(this.panel_Lefl_Resize);
             // 
             // panel_Right
             // 
             this.panel_Right.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel_Right.Location = new System.Drawing.Point(329, 0);
+            this.panel_Right.Location = new System.Drawing.Point(401, 0);
             this.panel_Right.Name = "panel_Right";
-            this.panel_Right.Size = new System.Drawing.Size(296, 419);
+            this.panel_Right.Size = new System.Drawing.Size(224, 419);
             this.panel_Right.TabIndex = 1;
             // 
             // SocketForm
@@ -70,6 +70,7 @@
             this.Name = "SocketForm";
             this.Text = "SocketForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SocketForm_FormClosed);
+            this.Resize += new System.EventHandler(this.SocketForm_Resize);
             this.panel_Lefl.ResumeLayout(false);
             this.ResumeLayout(false);
 

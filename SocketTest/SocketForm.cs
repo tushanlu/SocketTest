@@ -270,7 +270,7 @@ namespace SocketTest
         {
             lock (m_listBox)
             {
-                if (m_listBox.Items.Count > 100)
+                if (m_listBox.Items.Count > 1000)
                 {
                     m_listBox.Items.RemoveAt(0);
                 }
@@ -373,15 +373,6 @@ namespace SocketTest
             m_bSend = !m_bSend;
         }
 
-        private void panel_Resize(object sender, EventArgs e)
-        {
-            if (m_textBoxList == null) return;
-            foreach (TextBox text in m_textBoxList)
-            {
-                text.Width = panel_Lefl.Width - 10;
-            }
-        }
-
         private void SocketForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             m_bThread = false;
@@ -389,5 +380,18 @@ namespace SocketTest
             m_Socket.Close();
         }
 
+        private void SocketForm_Resize(object sender, EventArgs e)
+        {
+            this.panel_Right.Width = Convert.ToInt32(this.Width *0.45);
+        }
+
+        private void panel_Lefl_Resize(object sender, EventArgs e)
+        {
+            if (m_textBoxList == null) return;
+            foreach (TextBox text in m_textBoxList)
+            {
+                text.Width = panel_Lefl.Width - 10;
+            }
+        }
     }
 }

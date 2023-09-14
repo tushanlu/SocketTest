@@ -37,7 +37,7 @@
             this.panelFill.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelFill.Location = new System.Drawing.Point(0, 36);
             this.panelFill.Name = "panelFill";
-            this.panelFill.Size = new System.Drawing.Size(882, 570);
+            this.panelFill.Size = new System.Drawing.Size(982, 620);
             this.panelFill.TabIndex = 1;
             // 
             // panelTop
@@ -46,14 +46,14 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(882, 36);
+            this.panelTop.Size = new System.Drawing.Size(982, 36);
             this.panelTop.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(882, 606);
+            this.ClientSize = new System.Drawing.Size(982, 656);
             this.Controls.Add(this.panelFill);
             this.Controls.Add(this.panelTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
