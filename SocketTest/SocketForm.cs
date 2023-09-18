@@ -89,7 +89,6 @@ namespace SocketTest
             return textBoxTemp;
         }
 
-
         public void SetTime(int time)
         {
             m_Time = time;
@@ -194,7 +193,7 @@ namespace SocketTest
             {
                 if (m_textBoxList.Count == 0)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(10);
                     continue;
                 }
                 try
@@ -216,7 +215,6 @@ namespace SocketTest
                         this.Invoke((EventHandler)delegate
                         {
                             itemTextBox.BackColor = Color.White;
-                            //WriteListBox(this.Text + " Send:" + itemTextBox.Text);
                         });
                         if (!bErr)
                         {
@@ -254,7 +252,7 @@ namespace SocketTest
                 string strTemp = m_Socket.GetMessage();
                 if (strTemp == string.Empty)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(10);
                     continue;
                 }
                 this.Invoke((EventHandler)delegate

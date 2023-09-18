@@ -47,7 +47,7 @@ namespace SocketTest
             m_buttonSave.Text = "Save";
             m_buttonAdd.Text = "AddTab";
             m_buttonDel.Text = "DelTab";
-            m_buttonSetTime.Text = "SetTime";
+            m_buttonSetTime.Text = "SetTime(ms)";
             m_toolStrip.Items.Add(m_buttonOpen);
             m_toolStrip.Items.Add(m_buttonSave);
             m_toolStrip.Items.Add(m_buttonAdd);
@@ -132,7 +132,7 @@ namespace SocketTest
             m_tabControl.Controls.Clear();
         }
 
-        private string Input()
+        private string Input(string Time = null)
         {
             string setTemp = string.Empty;
             Form inputForm = new Form();
@@ -148,6 +148,7 @@ namespace SocketTest
             textBox.Parent = inputForm;
             textBox.Location = new Point(0, 2);
             textBox.Width = inputForm.Width - 2;
+            textBox.Text = Time;
             Button button = new Button();
             button.Parent = inputForm;
             button.Text = "OK";
@@ -230,10 +231,10 @@ namespace SocketTest
         private void buttonSetTime_Click(object sender, EventArgs e)
         {
             if (m_tabControl.Controls.Count == 0) return;
-            string strTemp = Input();
+            TabPage tabPage = m_tabControl.SelectedTab;
+            string strTemp = Input(m_SoketFormDict[tabPage].GetTime().ToString());
             if (strTemp == string.Empty) return;
             int nTime = int.Parse(strTemp);
-            TabPage tabPage = m_tabControl.SelectedTab;
             m_SoketFormDict[tabPage].SetTime(nTime);
         }
 

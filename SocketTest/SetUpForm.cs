@@ -13,6 +13,7 @@ namespace SocketTest
 {
     public delegate void AddDelegate(int port, bool socketType,  int Time,int num = 1, List<string> messageList = null);
     public delegate void DleDelegate();
+
     public partial class SetUpForm : Form
     {
         public event AddDelegate addDelegate;

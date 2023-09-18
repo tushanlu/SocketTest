@@ -16,6 +16,7 @@ namespace SocketTest
         private bool m_bWrite = false;
         private string m_FilePath;
         private static readonly Lazy<CLog> m_instacne = new Lazy<CLog>(() => new CLog());
+
         public static CLog Instance { get => m_instacne.Value; }
 
         private CLog()
@@ -65,7 +66,7 @@ namespace SocketTest
                     int nowConut = m_MessageQueue.Count;
                     if (nowConut == 0) 
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(10);
                         continue;
                     }
                     for (int i = 0; i < nowConut; i++)
@@ -110,11 +111,10 @@ namespace SocketTest
                         sw.Dispose();
                     }
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
             }
 
         }
-
 
     }
 

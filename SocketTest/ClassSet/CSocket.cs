@@ -11,8 +11,6 @@ using System.Diagnostics.Eventing.Reader;
 
 namespace SocketTest
 {
-
-
     public class CSocket
     {
         private Socket m_Socket = null;
@@ -24,6 +22,7 @@ namespace SocketTest
         private Queue<string> m_MessageQueue = new Queue<string>();
         private Thread m_ListenThread = null;
         private Thread m_ReceiveThread = null;
+
         public void SetPort(int num)
         {
             m_Port= num;
@@ -160,7 +159,7 @@ namespace SocketTest
             {
                 if (!IsConnected())
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(10);
                     continue;
                 }
                 Queue<string> tempQueue = new Queue<string>();
