@@ -90,7 +90,7 @@ namespace SocketTest
         }
 
 
-    public void SetTime(int time)
+        public void SetTime(int time)
         {
             m_Time = time;
         }
@@ -279,6 +279,13 @@ namespace SocketTest
             }
         }
 
+        private void Resume()
+        {
+            m_buttonmPause.Text = "Pause";
+            handler.Set();
+            m_bSend = false;
+        }
+
         private void panel_Lefl_ControlAdded(object sender, ControlEventArgs e)
         {
           panel_Lefl.AutoScroll = true;
@@ -326,7 +333,6 @@ namespace SocketTest
 
         private void buttonStop_Click(object sender, EventArgs e)
         {
-
             m_bThread = false;
             List<ToolStripButton> templist = new List<ToolStripButton>
             {
@@ -334,6 +340,7 @@ namespace SocketTest
                 m_buttonmPause
             };
             EnabledHandoff(templist, true);
+            Resume();
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)
@@ -364,13 +371,13 @@ namespace SocketTest
             if(!m_bSend)
             {
                 m_buttonmPause.Text = "Resume";
+                m_bSend = true;
             }
             else
             {
-                m_buttonmPause.Text = "Pause";
-                handler.Set();
+                Resume();
             }
-            m_bSend = !m_bSend;
+       
         }
 
         private void SocketForm_FormClosed(object sender, FormClosedEventArgs e)

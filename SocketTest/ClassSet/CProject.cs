@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SocketTest
 {
+    [Serializable]
     public class CProject
     {
         public List<string> m_TabPageList = new List<string>();

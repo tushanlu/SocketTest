@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 
 namespace SocketTest
 {
     
-
     public partial class MainForm : Form
     {
         private Dictionary<TabPage, SocketForm> m_SoketFormDict = new Dictionary<TabPage, SocketForm>();
@@ -74,9 +73,8 @@ namespace SocketTest
    
         }
 
-        private void Save(string filename)
-        {
-            
+        private void Save(string fileName)
+        {         
             CProject project = new CProject();
             foreach (TabPage tabPage in m_SoketFormDict.Keys)
             {
@@ -88,30 +86,36 @@ namespace SocketTest
             }
             try
             {
-                string output = JsonConvert.SerializeObject(project);
-                StreamWriter sw = new StreamWriter(filename);
-                sw.Write(output);
-                sw.Close();
+                using (FileStream file = File.Create(fileName))
+                {
+                    BinaryFormatter serializer = new BinaryFormatter();
+                    serializer.Serialize(file, project);
+                }
+
             }
             catch
             {
-                CLog.Instance.WriteRunTimeMessage("Save File Error:" + filename);
+                CLog.Instance.WriteRunTimeMessage("Save File Error:" + fileName);
             }
         }
 
-        private void Read(string filename) 
+        private void Read(string fileName) 
         {
             Clear();
-            string readTemp = File.ReadAllText(filename);
             CProject project = null;
             try
             {
-                project = JsonConvert.DeserializeObject<CProject>(readTemp);
+                using (FileStream file = File.Open(fileName, FileMode.Open))
+                {
+                    BinaryFormatter serializer = new BinaryFormatter();
+                    project = (CProject)serializer.Deserialize(file);
+                    file.Close();
+                }
 
             }
-            catch (Newtonsoft.Json.JsonReaderException)
+            catch
             {
-                CLog.Instance.WriteRunTimeMessage("Read File Error:" + filename);
+                CLog.Instance.WriteRunTimeMessage("Read File Error:" + fileName);
                 return;
             }
             if (project == null) return;
@@ -176,7 +180,7 @@ namespace SocketTest
                 return;
             }
             System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-            dialog.Filter = "文件|*";
+            dialog.Filter = "文件|*.Socket";
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
@@ -188,7 +192,7 @@ namespace SocketTest
         private void buttonOpen_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Filter = "文件|*";
+            dialog.Filter = "文件|*.Socket";
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
