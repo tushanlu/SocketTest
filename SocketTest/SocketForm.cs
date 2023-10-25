@@ -24,6 +24,7 @@ namespace SocketTest
         private ToolStripButton m_buttonConnect;
         private ToolStripButton m_buttonmPause;
         private ToolStripButton m_buttonAddMessage;
+        private ToolStripButton m_buttonSend;
         private ListBox m_listBox;
         private CSocket m_Socket;
         private Thread m_SendThread;
@@ -45,10 +46,12 @@ namespace SocketTest
             m_buttonConnect = new ToolStripButton();
             m_buttonmPause = new ToolStripButton();
             m_buttonAddMessage = new ToolStripButton();
+            m_buttonSend = new ToolStripButton();
             m_listBox = new ListBox();
             this.panel_Lefl.ControlAdded += panel_Lefl_ControlAdded;
             this.m_buttonAdd.Click += buttonAdd_Click;
             this.m_buttonRemove.Click += buttonReMove_Click;
+            this.m_buttonSend.Click += buttonSend_Click;
             this.m_buttonStart.Click += buttonStart_Click;
             this.m_buttonStop.Click += buttonStop_Click;
             this.m_buttonmPause.Click += buttonPause_Click;
@@ -131,6 +134,7 @@ namespace SocketTest
             m_statusStrip.Dock = DockStyle.Bottom;
             m_buttonAdd.Text = "Add";
             m_buttonRemove.Text = "Remove";
+            m_buttonSend.Text = "Send";
             m_buttonStart.Text = "Start";
             m_buttonStop.Text = "Stop";
             m_buttonmPause.Text = "Pause";
@@ -138,6 +142,7 @@ namespace SocketTest
             m_buttonAddMessage.Text = "AddMessage";
             m_statusStrip.Items.Add(m_buttonAdd);
             m_statusStrip.Items.Add(m_buttonRemove);
+            m_statusStrip.Items.Add(m_buttonSend);
             m_statusStrip.Items.Add(m_buttonStart);
             m_statusStrip.Items.Add(m_buttonStop);
             m_statusStrip.Items.Add(m_buttonmPause);
@@ -311,6 +316,14 @@ namespace SocketTest
             TextBox lastTextBox = m_textBoxList[nCount - 1];
             m_textBoxList.Remove(lastTextBox);
           panel_Lefl.Controls.Remove(lastTextBox);
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            int textBoxIndex = GetFocusTextBox() == null ? -1 : GetFocusTextBox().TabIndex;
+            if (textBoxIndex == -1 || m_textBoxList[textBoxIndex].Text == "") return;
+            bool bErr = m_Socket.Send(m_textBoxList[textBoxIndex].Text);
+            CLog.Instance.WriteRunTimeMessage(this.Text + " Send:" + m_textBoxList[textBoxIndex].Text);
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
