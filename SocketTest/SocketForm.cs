@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -361,19 +362,17 @@ namespace SocketTest
         }
 
         private void buttonAddMessage_Click(object sender, EventArgs e)
-        {
-            
+        {         
             int textBoxCount = m_textBoxList.Count;
             int textBoxIndex = GetFocusTextBox() == null ? -1: GetFocusTextBox().TabIndex;
             if (textBoxCount == 0 || textBoxIndex == -1) return;
-            string[] tempArr = m_textBoxList[textBoxIndex].Text.Split('{','}');
-            bool bIntType =  int.TryParse(tempArr[tempArr.Length / 2], out int nTmpe);
-            for (int i = textBoxIndex,add = 0; i < textBoxCount; i++,add++)
+            string strNum = Regex.Match(m_textBoxList[textBoxIndex].Text, @"\d").Value;
+            if (strNum.Length == 0) return;
+            for (int i = textBoxIndex, add = 0; i < textBoxCount; i++, add++)
             {
-                if (tempArr.Length ==0 || !bIntType) break;
-                string strTemp = tempArr[0] +"{"+ (nTmpe + add) +"}" + tempArr[tempArr.Length-1];         
-                m_textBoxList[i].Text = strTemp;
-          
+                if (m_textBoxList[textBoxIndex].Text.Length == 0) break;
+                string strTmpe = (int.Parse(strNum) + add).ToString();
+                m_textBoxList[i].Text = Regex.Replace( m_textBoxList[textBoxIndex].Text, @"\d", strTmpe);
             }
         }
 
