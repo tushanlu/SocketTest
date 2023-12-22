@@ -58,6 +58,7 @@ namespace SocketTest
             this.m_buttonmPause.Click += buttonPause_Click;
             this.m_buttonConnect.Click += buttonConnect_Click;
             this.m_buttonAddMessage.Click += buttonAddMessage_Click;
+            this.m_listBox.MouseClick+= listBox_MouseClick;
             InitFrom(textBoxNum, massageList);
 
             m_Socket = new CSocket();
@@ -408,6 +409,21 @@ namespace SocketTest
             foreach (TextBox text in m_textBoxList)
             {
                 text.Width = panel_Lefl.Width - 10;
+            }
+        }
+
+
+        private void listBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListBox listBox = (ListBox)sender;
+            if(listBox.Items.Count == 0)
+            {
+                return;
+            }
+            lock (listBox)
+            {
+                string strText = listBox.SelectedItem.ToString();
+                Clipboard.SetDataObject(strText);
             }
         }
     }

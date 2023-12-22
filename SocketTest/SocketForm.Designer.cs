@@ -38,7 +38,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(0, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 419);
+            this.splitter1.Size = new System.Drawing.Size(3, 389);
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
             // 
@@ -48,7 +48,7 @@
             this.panel_Lefl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel_Lefl.Location = new System.Drawing.Point(0, 0);
             this.panel_Lefl.Name = "panel_Lefl";
-            this.panel_Lefl.Size = new System.Drawing.Size(401, 419);
+            this.panel_Lefl.Size = new System.Drawing.Size(401, 389);
             this.panel_Lefl.TabIndex = 0;
             this.panel_Lefl.Resize += new System.EventHandler(this.panel_Lefl_Resize);
             // 
@@ -57,14 +57,14 @@
             this.panel_Right.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel_Right.Location = new System.Drawing.Point(401, 0);
             this.panel_Right.Name = "panel_Right";
-            this.panel_Right.Size = new System.Drawing.Size(224, 419);
+            this.panel_Right.Size = new System.Drawing.Size(224, 389);
             this.panel_Right.TabIndex = 1;
             // 
             // SocketForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 419);
+            this.ClientSize = new System.Drawing.Size(625, 389);
             this.Controls.Add(this.panel_Lefl);
             this.Controls.Add(this.panel_Right);
             this.Name = "SocketForm";

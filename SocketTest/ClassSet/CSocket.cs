@@ -165,7 +165,7 @@ namespace SocketTest
                 Queue<string> tempQueue = new Queue<string>();
                 try
                 {
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[10240];
                     string strMessage = string.Empty;
                     int countReceive = 0;
                     if (m_bType)
